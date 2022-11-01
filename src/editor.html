@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<script>
+
+  function onShortenClick() {
+    let baseUrl = "https://link.edgecompute.app/";
+    let input_text = document.getElementById('input_text').value;
+    const matches = input_text.match(/\bhttps?:\/\/\S+/gi);
+    if (!matches) {
+      alert("there is no URL to shorten");
+      return;
+    }
+
+    const shortIdPromises = [];
+    for (const url of matches) {
+      if (url.length < 50) {
+        continue;
+      }
+
+      let reqBody = {};
+      reqBody["url"] = url;
+
+      let p = fetch(baseUrl, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json', },
+        body: JSON.stringify(reqBody),
+      });
+
+      shortIdPromises.push(p);
+    }
+
+    Promise.all(shortIdPromises).then(responses =>
+      Promise.all(responses.map(response => response.json()))
+    ).then(datas => {
+      // generate the output message
+      let i = 0;
+      for (const d of datas) {
+        input_text = input_text.replaceAll(matches[i], baseUrl + d.short);
+        i++;
+      }
+
+      document.getElementById('output_text').value = input_text;
+    }).catch(err =>
+      alert(err)
+    );
+
+    return;
+  }
+
+  function onCopyToClipboard() {
+    var copyText = document.getElementById("output_text");
+    navigator.clipboard
+      .writeText(copyText.value).
+      then(() => {
+        alert("Copied to clipboard");
+      })
+      .catch(() => {
+        alert("something went wrong");
+      });
+  }
+
+</script>
+
+<body>
+
+  <h1>Fast URL Shortener</h1>
+
+  <div action="/action_page.php">
+    <p><label for="input_text">Get your message in the below text box. Click the below button to shorten URLs longer
+        than 50 in the message</label></p>
+    <button onclick="onShortenClick()">Shorten URL Fastly</button>
+    <br><br>
+    <textarea id="input_text" name="w3review" rows="25" cols="100"></textarea>
+    <br><br>
+    <p><label for="output_text">Message with URL shortened</label></p>
+    <button onclick="onCopyToClipboard()">Copy To Clipboard</button>
+    <br><br>
+    <textarea id="output_text" name="w3review" rows="25" cols="100"></textarea>
+  </div>
+
+</body>
+
+</html>

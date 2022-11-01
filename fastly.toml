@@ -1,0 +1,6 @@
+authors = ["<oss@fastly.com>"]
+description = "Fastly short URL generator"
+language = "rust"
+manifest_version = 2
+name = "short_url"
+service_id = ""
