@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
+<script src="https://cdn.tailwindcss.com"></script>
 <script>
 
   function onShortenClick() {
-    let baseUrl = "https://link.edgecompute.app/";
+    const baseUrl = window.location.origin + "/";
     let input_text = document.getElementById('input_text').value;
     const matches = input_text.match(/\bhttps?:\/\/\S+/gi);
     if (!matches) {
@@ -61,23 +62,39 @@
 
 </script>
 
-<body>
+<body class="mx-auto max-w-4xl px-2">
+  <div class="text-4xl font-bold text-center text-red-500 my-5">Fastly URL Shortener</div>
 
-  <h1>Fast URL Shortener</h1>
+  <p class="ms-auto text-lg text-gray-500 dark:text-gray-400 my-5">Enter your message below and click "Shorten URL" to
+    shorten any URLs over 50 characters.</p>
+  <div class="mb-20">
+    <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50">
+      <div class="px-4 py-2 bg-white rounded-t-lg ">
+        <textarea class="w-full px-0 text-sm text-gray-900 bg-white border-0" id="input_text" rows="10"
+          cols="100"></textarea>
+      </div>
 
-  <div action="/action_page.php">
-    <p><label for="input_text">Get your message in the below text box. Click the below button to shorten URLs longer
-        than 50 in the message</label></p>
-    <button onclick="onShortenClick()">Shorten URL Fastly</button>
-    <br><br>
-    <textarea id="input_text" name="w3review" rows="25" cols="100"></textarea>
-    <br><br>
-    <p><label for="output_text">Message with URL shortened</label></p>
-    <button onclick="onCopyToClipboard()">Copy To Clipboard</button>
-    <br><br>
-    <textarea id="output_text" name="w3review" rows="25" cols="100"></textarea>
+      <div class="flex items-left justify-between px-3 py-2 border-t">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onclick="onShortenClick()">Shorten URL</button>
+      </div>
+    </div>
   </div>
 
+  <p class="ms-auto text-lg text-gray-500 dark:text-gray-400 my-5">Message with URL shortened</p>
+  <div class="mb-20">
+    <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50">
+      <div class="px-4 py-2 bg-white rounded-t-lg ">
+        <textarea class="w-full px-0 text-sm text-gray-900 bg-white border-0" id="output_text" rows="10"
+          cols="100"></textarea>
+      </div>
+
+      <div class="flex items-left justify-between px-3 py-2 border-t">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onclick="onCopyToClipboard()">Copy To Clipboard</button>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
